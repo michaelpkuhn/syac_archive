@@ -1,0 +1,42 @@
+html {
+    height: 100vh;
+    word-wrap: break-word;
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+body > div {
+    width: 20em;
+    height: 100%;
+}
+
+#form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50%;
+}
+
+#form div {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0em 0em;
+}
+
+@media (min-width: 600px) {
+    #form{
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: inherit;
+    }
+
+    #form div {
+        padding: 0em 1em 0em 0em;
+    }
+}
