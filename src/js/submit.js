@@ -1,12 +1,25 @@
 
 
 
-document.getElementById("submit")
-    .addEventListener("click", submitIt);
-console.log("test")
+// document.getElementById("submit")
+//     .addEventListener("click", submitIt);
+
+    
+document.getElementById("form")
+    .addEventListener("submit", submitIt);
+
+// console.log("test")
+const output = () => 
+    document.getElementById("output").children[0];
+console.log(output())
+// output().innerHTML = "test"
+
 
 function submitIt(e){
-    let url = document.getElementById("url").value;
+    e.preventDefault();
+    let input = document.getElementById("url")
+    let url = input.value;
+    input.value = "";
     console.log(url);
     archiveIt(url)
 }
@@ -14,33 +27,43 @@ function submitIt(e){
 async function archiveIt(url){
     let snapshots;
 
-    await checkAvail(url)
-        .then((rsp)=>{rsp.archived_snapshots})
-        .then((result)=>{
-            console.log(rsp, result)
-            snapshots = result
-            if(snapshots == {}){
-                saveIt(url)
+    checkAvail(url)
+        .then((respJson) => {
+            if (respJson == '') {
+                output().innerHTML = "An Error Has Occured";
             } else {
-                console.log(snapshots.closest.url)
+
+                console.log(respJson)
+                console.log(respJson.archived_snapshots)
             }
         })
-        .catch((error) => console.log("error", error))
 }
 
 async function checkAvail(url = "") {
     let aurl = "https://archive.org/wayback/available?url="
 
-    let rsp
+    // let rsp
+    console.log('furl', aurl+url)
 
-    const response = await fetch(aurl + url)
-        .then((data) => {rsp = data.json()})
-        .catch((error) => console.log("error", error));
+    fetch(url)
+
+    return fetch(aurl + url)
+        .then((resp) => {
+            if (resp.ok){
+                return resp.json()
+            }
+            throw new Error(resp)
+        })
+        // .then((respJson) => {rsp = respJson})
+        .catch((error) => {
+            console.log("error", error)
+            return ''
+        });
     
     
-    console.log(rsp)
+    // console.log('rsp', rsp)
     
-    return rsp
+    // return rsp
 }
 
 function saveIt(url){
